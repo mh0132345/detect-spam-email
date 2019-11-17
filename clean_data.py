@@ -7,13 +7,13 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 from urllib.request import urlretrieve
 
-def extract_email_file(url, filename="./honeypot-content.tar.gz"):
+def extract_email_file(url, folder_name="spam_email", filename="./honeypot-content.tar.gz"):
     urlretrieve(url, filename=filename)
     print("Download complete!")
     print("Unzipping dataset (this may take a while)")
-    os.makedirs("spam_email", exist_ok=True)
+    os.makedirs(folder_name, exist_ok=True)
     tfile = tarfile.open("honeypot-content.tar.gz", "r:gz")
-    tfile.extractall("./spam_email")
+    tfile.extractall(folder_name)
 
 def get_all_file(email_dir):
     files = []
@@ -81,5 +81,8 @@ def export_email_content(messages, output_file="email_message.csv"):
 if __name__ == '__main__':
     url = "https://hackjunction.d-fence.eu/ItrryOmHB1HNzyB/honeypot-content.tar.gz"
     extract_email_file(url)
-    email_dir = Path("D:/spam/spam_email")
+    email_dir = "./spam_email"
     files = get_all_file(email_dir)
+    email_objs = get_all_email_object(email_dir)
+    all_email = get_all_email_header(email_objs)
+    export_email_headers(all_email, "email_header_test.csv")

@@ -15,6 +15,6 @@ How To Use This
 ---------------
 
 1. Run `pip install -r requirements.txt` to install dependencies
-2. Run `python check_email_spam.py`
+2. Run `python check_email_spam.py folder` or `python check_email_spam_from_url url`
 
 
