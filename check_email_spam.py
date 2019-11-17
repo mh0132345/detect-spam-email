@@ -99,12 +99,18 @@ def calculate_score(email_obj):
     score_subject_spam_word = check_subject_contain_spam_word(email_obj)
     score_subject_common_spam_word = check_subject_contain_common_spam_word(email_obj)
     scores = [
-        score_auth, score_spam, score_reply, score_message_id,
+        score_auth, score_spam, score_reply*2, score_message_id*2,
         score_x_mailer, score_subject_at_sign, score_subject_dollar_sign,
-        score_subject_re_keyword, score_subject_spam_word,
+        score_subject_re_keyword, score_subject_spam_word*2,
         score_subject_common_spam_word
     ]
     return sum(scores)
+
+def is_spam(email_obj):
+    score = calculate_score(email_obj)
+    if score >= 6:
+        return True
+    return False
 
 
 if __name__ == '__main__':
@@ -113,5 +119,6 @@ if __name__ == '__main__':
     email_objs = clean_data.get_all_email_object("D:/spam/spam_email")
     count = 0
     for email_obj in email_objs:
-        count += calculate_score(email_obj)
-    print(count)
+        count += is_spam(email_obj)
+    print("Number of spam email: ", count)
+    print("Accuracy: ", count*1.0/len(email_objs))
