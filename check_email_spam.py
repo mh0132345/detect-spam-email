@@ -111,7 +111,7 @@ def calculate_score(email_obj):
     score_subject_common_spam_word = check_subject_contain_common_spam_word(email_obj)
     score_subject_contain_harmful_domain = check_subject_contain_harmful_domain(email_obj)
     scores = [
-        score_auth, score_spam, score_reply*2, score_message_id*2,
+        score_auth*5, score_spam*5, score_reply*2, score_message_id*2,
         score_x_mailer, score_subject_at_sign, score_subject_dollar_sign,
         score_subject_re_keyword, score_subject_spam_word*2,
         score_subject_common_spam_word, score_subject_contain_harmful_domain
@@ -130,6 +130,8 @@ def check_spam_email_folder(email_dir):
     n_spam_email = 0
     for email_obj in email_objs:
         n_spam_email += is_spam(email_obj)
+    print("Number of spam email: ", n_spam_email)
+    print("Accuracy: ", n_spam_email*1.0/len(email_objs))
     return n_spam_email, email_objs
 
 if __name__ == '__main__':
@@ -138,8 +140,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Use command: python check_email_spam folder")
         exit()
-    email_dir = "./spam_email"
-    print("Start to calculate!")
+    email_dir = sys.argv[1] # "./spam_email"
+    print("Test with provided spam email folder! Assume that all email is spam!")
     n_spam_email, email_objs = check_spam_email_folder(email_dir)
-    print("Number of spam email: ", n_spam_email)
-    print("Accuracy: ", n_spam_email*1.0/len(email_objs))
